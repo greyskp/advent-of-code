@@ -10,7 +10,7 @@ func main() {
 	if len(os.Args) > 1 {
 		path = os.Args[1]
 	}
-	
-	result := rotateKnob(path)
-	fmt.Println(result)
+
+	exact, passing := rotateKnob(path)
+	fmt.Println(exact, passing)
 }
