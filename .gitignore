@@ -1,0 +1,28 @@
+# Go
+/dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.so.*
+*.dylib
+*.test
+*.out
+/vendor/
+go.sum
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+input.txt
+inputs/
+.env
