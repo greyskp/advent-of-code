@@ -1,1 +1,3 @@
-Advent of code exercises
+**Advent of Code 2025**
+
+Solutions for [Advent of Code 2025](https://adventofcode.com/2025)
