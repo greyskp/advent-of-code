@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -22,7 +21,6 @@ func rotateKnob(file string) (int, int) {
 		val, _ = strconv.Atoi(rows[1:])
 
 		passingZeros += val / 100
-		fmt.Println("multiple laps: ", val/100)
 		val = val % 100
 
 		if string(rows[0]) == "L" {
