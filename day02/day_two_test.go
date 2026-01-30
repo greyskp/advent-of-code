@@ -15,3 +15,11 @@ func TestIdentifyInvalidIds(t *testing.T) {
 		t.Fatalf("IdentifyInvalidIds result for large dataset is %d, want %d", result_large, expected_large)
 	}
 }
+
+func TestIdentifyInvalidIdsPartTwo(t *testing.T) {
+	result := InvalidIdsPartTwo("small_entries.txt")
+	expected := 4174379265
+	if result != expected {
+		t.Fatalf("IdentifyInvalidIds result is %d, want %d", result, expected)
+	}
+}
