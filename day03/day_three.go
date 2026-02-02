@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -9,28 +10,45 @@ import (
 	"github.com/greyskp/advent-of-code/utils"
 )
 
-func HighestJoltage(file string) int {
+func HighestJoltagePartTwo(filename string, numberOfSwitches int) int {
 	res := 0
-	data := utils.ReadInputFile(file)
-	rows := strings.Split(data, "\n")
+	data := utils.ReadInputFile(filename)
+	banks := strings.Split(data, "\n")
 
-	for _, values := range rows {
-		first := 0
-		second := 0
-		valueInt := 0
+	// Go through the different battery banks
+	for _, bank := range banks {
+		switches := make([]int, numberOfSwitches)
+		start := 0
 
-		for i, elem := range values {
-			valueInt, _ = strconv.Atoi(string(elem))
-			if first == 0 || (valueInt > first && i < len(values)-1) {
-				first = valueInt
-				second = 0
-			} else {
-				if valueInt > second {
-					second = valueInt
+		// Go through the different switches in the bank
+		for i, switch_ := range bank {
+			valueInt, _ := strconv.Atoi(string(switch_))
+			remaining := len(bank) - i
+
+			// Check number of elements left in the row to update starting position
+			if numberOfSwitches > remaining {
+				start++
+			}
+
+			//Find the first switch that can be updated and reset the rest to 0
+			for x := start; x < len(switches); x++ {
+				if valueInt > switches[x] {
+					switches[x] = valueInt
+					clear(switches[x+1:])
+					break
 				}
 			}
 		}
-		resRow, _ := strconv.Atoi(strconv.Itoa(first) + strconv.Itoa(second))
+		
+		var builder strings.Builder
+		for _, e := range switches {
+			builder.WriteString(strconv.Itoa(e))
+		}
+		resRow, err := strconv.Atoi(builder.String())
+
+		if err != nil {
+			log.Fatalf("Error parsing string %v", err)
+		}
 		res += resRow
 	}
 
@@ -43,5 +61,6 @@ func main() {
 		path = os.Args[1]
 	}
 
-	fmt.Println(HighestJoltage(path))
+	fmt.Println(HighestJoltagePartTwo(path, 2))
+	fmt.Println(HighestJoltagePartTwo(path, 12))
 }
