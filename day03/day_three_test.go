@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestHighestJoltage_PartTwo(t *testing.T) {
+func TestHighestJoltagePartTwo(t *testing.T) {
 	result := HighestJoltagePartTwo("small_entries.txt", 2)
 	result3 := HighestJoltagePartTwo("small_entries.txt", 3)
 	result4 := HighestJoltagePartTwo("small_entries.txt", 4)

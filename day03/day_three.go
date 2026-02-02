@@ -21,8 +21,8 @@ func HighestJoltagePartTwo(filename string, numberOfSwitches int) int {
 		start := 0
 
 		// Go through the different switches in the bank
-		for i, switch_ := range bank {
-			valueInt, _ := strconv.Atoi(string(switch_))
+		for i, joltage := range bank {
+			valueJoltage, _ := strconv.Atoi(string(joltage))
 			remaining := len(bank) - i
 
 			// Check number of elements left in the row to update starting position
@@ -32,8 +32,8 @@ func HighestJoltagePartTwo(filename string, numberOfSwitches int) int {
 
 			//Find the first switch that can be updated and reset the rest to 0
 			for x := start; x < len(switches); x++ {
-				if valueInt > switches[x] {
-					switches[x] = valueInt
+				if valueJoltage > switches[x] {
+					switches[x] = valueJoltage
 					clear(switches[x+1:])
 					break
 				}
