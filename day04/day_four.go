@@ -10,8 +10,22 @@ import (
 
 var neighbors = [8][2]int{
 	{-1, -1}, {-1, 0}, {-1, 1},
-	{0, -1},           {0, 1},
-	{1, -1},  {1, 0},  {1, 1},
+	{0, -1}, {0, 1},
+	{1, -1}, {1, 0}, {1, 1},
+}
+
+func ParsePaperRollsMap(rows []string) [][]byte {
+	// Only sets columns size
+	parsedRows := make([][]byte, len(rows))
+
+	for i, row := range rows {
+		// set row size
+		parsedRows[i] = make([]byte, len(rows[i]))
+		for j := range row {
+			parsedRows[i][j] = rows[i][j]
+		}
+	}
+	return parsedRows
 }
 
 func ForkliftMap(filename string) int {
@@ -21,14 +35,13 @@ func ForkliftMap(filename string) int {
 
 	for i, row := range rows {
 		for j := range row {
-			
+
 			count := 0
-			
+
 			if rows[i][j] == '@' {
 
 				for _, d := range neighbors {
 					ni := i + d[0]
-					//fmt.Println(ni)
 					if ni < 0 || ni >= len(rows) {
 						continue
 					}
@@ -47,13 +60,62 @@ func ForkliftMap(filename string) int {
 				}
 
 				if count < 4 {
-					result++ 
+					result++
 				}
 			}
-			
-			
 
 		}
+	}
+
+	return result
+}
+
+func UpdateForklistMap(rows [][]byte) ([][]byte, int) {
+	rollsRemoved := 0
+	for i, row := range rows {
+		for j := range row {
+			count := 0
+			if rows[i][j] == '@' {
+				for _, d := range neighbors {
+					ni := i + d[0]
+					if ni < 0 || ni >= len(rows) {
+						continue
+					}
+					nj := j + d[1]
+					if nj < 0 || nj >= len(rows[ni]) {
+						continue
+					}
+
+					if rows[ni][nj] == '@' {
+						count++
+						if count >= 4 {
+							break
+						}
+					}
+				}
+				if count < 4 {
+					rows[i][j] = '.'
+					rollsRemoved++
+				}
+			}
+		}
+	}
+	return rows, rollsRemoved
+}
+
+func RemovePaperRolls(filename string) int {
+	paperRollsMap := utils.ReadInputFile(filename)
+	rows := strings.Split(paperRollsMap, "\n")
+	result := 0
+
+	parsedRows := ParsePaperRollsMap(rows)
+
+	updatedRows, rollsAccessed := UpdateForklistMap(parsedRows)
+	result += rollsAccessed
+
+	for rollsAccessed > 0 {
+		updatedRows, rollsAccessed = UpdateForklistMap(updatedRows)
+		result += rollsAccessed
 	}
 
 	return result
@@ -66,4 +128,5 @@ func main() {
 	}
 
 	fmt.Println(ForkliftMap(path))
+	fmt.Println(RemovePaperRolls(path))
 }
